@@ -165,3 +165,43 @@ image: "https://i.postimg.cc/8Pj7d4SK/118818252-3267417773350117-274129349827596
             document.body.style.overflow = 'auto';
         }
     });
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+      });
+      
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
+          e.preventDefault();
+          alert('هذا الخيار معطّل.');
+        }
+      });
+      document.addEventListener('keydown', function(e) {
+        // لو ضغط على Ctrl + U
+        if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
+          e.preventDefault();
+          location.reload(); // إعادة تحميل الصفحة
+        }
+      
+        // لو ضغط على F12
+        if (e.key === 'F12') {
+          e.preventDefault();
+          location.reload();
+        }
+      
+        // لو ضغط على Ctrl + Shift + I
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) {
+          e.preventDefault();
+          location.reload();
+        }
+      });
+      document.addEventListener('keydown', function(e) {
+        // مجموعة أزرار معينة
+        if (
+          (e.ctrlKey && (e.key === 'u' || e.key === 'U')) || // Ctrl + U
+          (e.key === 'F12') ||                              // F12
+          (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) // Ctrl + Shift + I
+        ) {
+          e.preventDefault();
+          location.reload(); // إعادة تحميل الصفحة
+        }
+      });
