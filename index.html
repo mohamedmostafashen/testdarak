@@ -5,8 +5,735 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>دارَك - هدوء يروق بالك</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    --primary-color: #3a7d44;
+    --primary-dark: #2a5c32;
+    --primary-light: #5d9e68;
+    --secondary-color: #e6b325;
+    --secondary-dark: #d4a21c;
+    --text-color: #333;
+    --text-light: #666;
+    --bg-color: #f9f7f0;
+    --card-bg: #ffffff;
+    --header-bg: rgba(249, 247, 240, 0.95);
+    --footer-bg: #2a363b;
+    --footer-text: #e8e8e8;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --transition: all 0.3s ease;
+    --border-radius: 12px;
+    --section-padding: 80px 0;
+}
 
+.dark-mode {
+    --primary-color: #5d9e68;
+    --primary-dark: #3a7d44;
+    --primary-light: #7fba89;
+    --secondary-color: #f0c14b;
+    --secondary-dark: #e6b325;
+    --text-color: #e8e8e8;
+    --text-light: #b0b0b0;
+    --bg-color: #1a1a1a;
+    --card-bg: #2a2a2a;
+    --header-bg: rgba(26, 26, 26, 0.95);
+    --footer-bg: #1a1a1a;
+    --footer-text: #e8e8e8;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: var(--transition);
+    overflow-x: hidden;
+}
+
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+.page-loader.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loader-logo-img {
+    width: 150px;
+    height: auto;
+    animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.1); opacity: 1; }
+}
+
+.progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: transparent;
+    z-index: 1000;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 0;
+    background-color: var(--header-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+    z-index: 100;
+    transition: var(--transition);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-img {
+    width: 50px;
+    height: auto;
+    transition: var(--transition);
+}
+
+.logo:hover .logo-img {
+    transform: rotate(5deg) scale(1.05);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    position: relative;
+    padding: 5px 0;
+    transition: var(--transition);
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+nav ul li a:hover {
+    color: var(--primary-color);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: 20px;
+    transition: var(--transition);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.theme-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--secondary-color);
+    transform: rotate(20deg);
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.menu-toggle:hover {
+    color: var(--primary-color);
+}
+
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 350px;
+    height: 100vh;
+    background-color: var(--card-bg);
+    z-index: 1000;
+    padding: 30px;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    overflow-y: auto;
+}
+
+.mobile-menu.active {
+    right: 0;
+}
+
+.mobile-menu ul {
+    list-style: none;
+    margin-top: 50px;
+}
+
+.mobile-menu ul li {
+    margin-bottom: 20px;
+}
+
+.mobile-menu ul li a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition: var(--transition);
+    display: block;
+    padding: 10px 0;
+}
+
+.mobile-menu ul li a:hover {
+    color: var(--primary-color);
+    transform: translateX(-5px);
+}
+
+.close-menu {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.close-menu:hover {
+    color: var(--secondary-color);
+    transform: rotate(90deg);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://i.postimg.cc/kGCGKZJq/snapedit-1746975834158.png') no-repeat center center/cover;
+    color: #fff;
+    padding: 0 20px;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to top, var(--bg-color), transparent);
+    z-index: 1;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+}
+
+.hero h2 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1s ease;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1s ease 0.2s both;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: var(--secondary-color);
+    color: #333;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 0 4px 15px rgba(230, 179, 37, 0.3);
+    animation: fadeInUp 1s ease 0.4s both;
+}
+
+.btn:hover {
+    background-color: var(--secondary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(230, 179, 37, 0.4);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+section {
+    padding: var(--section-padding);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.section-title h2 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    display: inline-block;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.section-title h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translateX(50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    border-radius: 3px;
+}
+
+.section-card {
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.section-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.section-card p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-light);
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.product-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.product-img {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-img img {
+    transform: scale(1.05);
+}
+
+.product-price {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: var(--secondary-color);
+    color: #333;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-info {
+    padding: 20px;
+}
+
+.product-info h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.product-info p {
+    color: var(--text-light);
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+.product-btn {
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.product-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 60px 0 20px;
+    position: relative;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-column {
+    text-align: center;
+    width: 100%;
+}
+
+.footer-column h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-column p {
+    margin-bottom: 20px;
+    line-height: 1.7;
+    color: var(--footer-text);
+    opacity: 0.8;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: var(--footer-text);
+    font-size: 1.1rem;
+    transition: var(--transition);
+    text-decoration: none; /* إزالة الخط تحت الأيقونة */
+}
+
+.social-links a:hover {
+    background-color: var(--secondary-color);
+    color: #333;
+    transform: translateY(-3px);
+}
+
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    display: block;
+    margin: 15px 0;
+}
+
+.footer-links a {
+    color: var(--footer-text);
+    text-decoration: none;
+    transition: var(--transition);
+    opacity: 0.8;
+    display: block;
+    padding: 5px 0;
+}
+
+.footer-links a:hover {
+    color: var(--secondary-color);
+    opacity: 1;
+    transform: translateX(-5px);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-bottom p {
+    color: var(--footer-text);
+    opacity: 0.7;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
+
+.back-to-top.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-3px);
+}
+
+@media (max-width: 992px) {
+    .hero h2 {
+        font-size: 2.8rem;
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+    }
+    
+    nav {
+        display: none;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    .section-title h2 {
+        font-size: 2.2rem;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .hero h2 {
+        font-size: 2.2rem;
+    }
+    
+    .section-card {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero h2 {
+        font-size: 1.8rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .section-title h2 {
+        font-size: 1.8rem;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-img {
+        height: 200px;
+    }
+}
+    </style>
 </head>
 <body>
     
@@ -55,6 +782,7 @@
             <li><a href="#destinations">الأماكن الريفية</a></li>
         </ul>
         <button class="theme-toggle" id="mobileThemeToggle" aria-label="تبديل الوضع الداكن">
+            <i class="fas fa-moon"></i>
         </button>
     </div>
 
@@ -66,6 +794,13 @@
             <p>اكتشف جمال الريف المصري واستمتع بتجربة فريدة من الاسترخاء والطبيعة الخلابة مع دارَك</p>
             <a href="#about" class="btn">اعرف اكثر</a>
         </div>
+        
+        <!-- تأثيرات الطبيعة -->
+        <div class="nature-effect leaf" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+        <div class="nature-effect leaf" style="top: 70%; left: 15%; animation-delay: 2s;"></div>
+        <div class="nature-effect leaf" style="top: 40%; left: 85%; animation-delay: 4s;"></div>
+        <div class="nature-effect bird" style="top: 30%; left: 80%; animation-delay: 1s;"></div>
+        <div class="nature-effect bird" style="top: 60%; left: 5%; animation-delay: 3s;"></div>
     </section>
 
     <section class="campaign-goal" id="about">
@@ -80,6 +815,7 @@
                 </p>
             </div>
         </div>
+        <div class="agriculture-pattern"></div>
     </section>
     
 
@@ -92,6 +828,7 @@
                 <p>هدف الحملة هو إبراز جمال الريف المصري من خلال عرض الأماكن الريفية وما تقدمه من أنشطة وفعاليات مميزة عشان نقدر نقدملك تجربة متكاملة.</p>
             </div>
         </div>
+        <div class="agriculture-pattern"></div>
     </section>
 
     <section class="destinations" id="destinations">
@@ -121,7 +858,7 @@
                     <div class="product-info">
                         <h3>مزرعة دهشور</h3>
                         <p>مزرعة ريفية توفر تجربة فريدة للزوار</p>
-                        <a href="dahshur.html" class="product-btn">اعرف أكثر</a>
+                        <a href="مزرعة دهشور.html" class="product-btn">اعرف أكثر</a>
                     </div>
                 </div>
                 
@@ -133,7 +870,7 @@
                     <div class="product-info">
                         <h3>مزرعة ديار مريم</h3>
                         <p>مزرعة عضوية توفر منتجات طازجة</p>
-                        <a href="diarmariam.html" class="product-btn">اعرف أكثر</a>
+                        <a href="مزرعة ديار مريم.html" class="product-btn">اعرف أكثر</a>
                     </div>
                 </div>
                 <div class="product-card" data-destination="4">
@@ -144,7 +881,7 @@
                     <div class="product-info">
                         <h3>قرية غرب سهيل</h3>
                         <p>قرية نوبية جميلة تشتهر بالثقافة النوبية</p>
-                        <a href="gharbsoheil.html" class="product-btn">اعرف أكثر</a>
+                        <a href="قرية غرب سهيل.html" class="product-btn">اعرف أكثر</a>
                     </div>
                 </div>
                 <div class="product-card" data-destination="5">
@@ -155,7 +892,7 @@
                     <div class="product-info">
                         <h3>مزرعة شجيع </h3>
                         <p>مزرعة تشتهر بزراعة المانجو</p>
-                        <a href="shagea.html" class="product-btn">اعرف أكثر</a>
+                        <a href="قرية شجيع.html" class="product-btn">اعرف أكثر</a>
                     </div>
                 </div>
                 <div class="product-card" data-destination="6">
@@ -166,7 +903,7 @@
                     <div class="product-info">
                         <h3>مزرعة هازيل </h3>
                         <p>مزرعة ترفيهية توفر أنشطة متنوعة</p>
-                        <a href="hazel.html" class="product-btn">اعرف أكثر</a>
+                        <a href="مزرعة هزيل.html" class="product-btn">اعرف أكثر</a>
                     </div>
                 </div>
             </div>
@@ -186,16 +923,7 @@
                     </div>
                 </div>
                 
-                <div class="footer-column">
-                    <h3>الاقسام</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">الرئيسية</a></li>
-                        <li><a href="#about">من نحن</a></li>
-                        <li><a href="#goal">الهدف</a></li>
-                        <li><a href="#destinations">الأماكن الريفية</a></li>
-                    </ul>
-                </div>
-            </div>
+
             
             <div class="footer-bottom">
                 <p>&copy; 2025 دارَك - جميع الحقوق محفوظة</p>
@@ -207,7 +935,160 @@
     <button class="back-to-top" id="backToTop">
         <i class="fas fa-arrow-up"></i>
     </button>
-    <script src="script.js"></script>
 
+    <script>
+        // تحميل الصفحة
+        window.addEventListener('load', function() {
+            const pageLoader = document.querySelector('.page-loader');
+            setTimeout(() => {
+                pageLoader.classList.add('fade-out');
+                
+                // إضافة تأثيرات الطبيعة بعد تحميل الصفحة
+                addNatureEffects();
+            }, 1500);
+        });
+
+        // شريط التقدم
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollProgress = (scrollTop / scrollHeight) * 100;
+            document.getElementById('progressBar').style.width = scrollProgress + '%';
+            
+            // إظهار/إخفاء زر العودة للأعلى
+            const backToTop = document.getElementById('backToTop');
+            if (scrollTop > 300) {
+                backToTop.classList.add('active');
+            } else {
+                backToTop.classList.remove('active');
+            }
+        });
+
+        // زر العودة للأعلى
+        document.getElementById('backToTop').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // تبديل الوضع الداكن
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+        const body = document.body;
+        
+        function toggleDarkMode() {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            
+            // تغيير الأيقونة
+            const icon = isDark ? 'fa-sun' : 'fa-moon';
+            themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
+            mobileThemeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
+            
+            // حفظ التفضيل في localStorage
+            localStorage.setItem('darkMode', isDark);
+        }
+        
+        themeToggle.addEventListener('click', toggleDarkMode);
+        mobileThemeToggle.addEventListener('click', toggleDarkMode);
+        
+        // التحقق من تفضيلات المستخدم عند التحميل
+        if (localStorage.getItem('darkMode') === 'true') {
+            body.classList.add('dark-mode');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            mobileThemeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        // القائمة المتنقلة
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const overlay = document.getElementById('overlay');
+        const closeMenu = document.getElementById('closeMenu');
+        
+        menuToggle.addEventListener('click', function() {
+            mobileMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        closeMenu.addEventListener('click', function() {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        overlay.addEventListener('click', function() {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // تأثيرات التمرير السلس
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // إغلاق القائمة المتنقلة إذا كانت مفتوحة
+                    if (mobileMenu.classList.contains('active')) {
+                        mobileMenu.classList.remove('active');
+                        overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                }
+            });
+        });
+
+        // تأثيرات الطبيعة الديناميكية
+        function addNatureEffects() {
+            const heroSection = document.querySelector('.hero');
+            
+            for (let i = 0; i < 8; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'nature-effect leaf';
+                leaf.style.top = `${Math.random() * 80 + 10}%`;
+                leaf.style.left = `${Math.random() * 90 + 5}%`;
+                leaf.style.animationDelay = `${Math.random() * 5}s`;
+                leaf.style.transform = `scale(${Math.random() * 0.7 + 0.3}) rotate(${Math.random() * 360}deg)`;
+                heroSection.appendChild(leaf);
+            }
+            
+            for (let i = 0; i < 3; i++) {
+                const bird = document.createElement('div');
+                bird.className = 'nature-effect bird';
+                bird.style.top = `${Math.random() * 80 + 10}%`;
+                bird.style.left = `${Math.random() * 90 + 5}%`;
+                bird.style.animationDelay = `${Math.random() * 5}s`;
+                bird.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+                heroSection.appendChild(bird);
+            }
+        }
+
+        // تأثيرات عند التمرير
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section-card, .product-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
 </body>
 </html>
